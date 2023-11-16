@@ -1,0 +1,59 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      base-path: "/actuator"
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.jdbc.core.JdbcTemplate: INFO
+    com.wokoworks: DEBUG
+  pattern:
+    console: "%date{yy-MM-dd HH:mm:ss.SSS} %5p ${PID:-} --- [%15.15t] %-40.40logger{39}[%4line]: %msg%n"
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/dec_service_chain_ethereum?cachePrepStmts=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    druid:
+      name: dec_service_chain_ethereum
+      initial-size: 0
+      min-idle: 3
+      max-active: 10
+      max-wait: 60000
+      test-on-borrow: false
+      test-while-idle: true
+      validation-query: SELECT 1
+      poolPreparedStatements: true
+      max-pool-prepared-statement-per-connection-size: 100
+
+dec-chain-ethereum-schedule:
+  schedule-system: "dec-middleware-schedule"
+  #public key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBANPKRvcPQXNSDV+rvaHu9H46pAQwdIlienOx9ZUAKWciXcMw+tlFQF30ACStYXrJHev+SGnbh9076FAUQ82zdu0CAwEAAQ==
+  pri-key: "MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEA08pG9w9Bc1INX6u9oe70fjqkBDB0iWJ6c7H1lQApZyJdwzD62UVAXfQAJK1heskd6/5IaduH3TvoUBRDzbN27QIDAQABAkEAnbS1LUmF4jqKTOBU4B1QoCJIefoe/SKArmAoz+AD9JAO19Zb3eE8Dmy002RrsxsOZ+IeJuEU6iBaugiaSILdvQIhAOtFEAVpb7/OJKazIyB5PzlaIdlzUQnu2t2QkCiTehLbAiEA5nOWwS1PwXmZuxaU+dFc0CSZUuXnxLoxR6D2eo8EM9cCIQCXP6rxD7t7v3bohDmM4uW2ZS9lsDDlBd1Gm21R6J2OCQIgGDMXJ538fBKq5AyRBFLJ7kmJmDzwQ6ZRunXarDAMfu0CIDI28EQAMmG6BwbN8aYLzfezzlUN7OldQ+PIanF3OCNW"
+
+chain:
+  web3j:
+    # 连接超时时间
+    connect-timeout: 20
+    # 读取超时时间
+    read-timeout: 30
+    # 写入超时时间
+    write-timeout: 60
+  # 定时任务
+  task:
+    # 轮询创建连接间隔时间(毫秒)
+    poll-create-connection-delay: 300000
+  #重试交易时间
+  retry-block-time: 60000
+  #分批处理条数
+  page-size: 100
+
+ribbon.ReadTimeout: 60000
+ribbon.ConnectTimeout: 60000

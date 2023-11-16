@@ -1,0 +1,22 @@
+server:
+  port: 51125
+  servlet:
+    context-path: /chainEthDec
+spring:
+  application:
+    name: dec-service-chain-eth-dec
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: local
+  cloud:
+    nacos:
+      discovery:
+        server-addr: http://nacos-local.wokoworks.com
+        namespace: local
+        group: DEFAULT_GROUP
+      config:
+        server-addr: http://nacos-local.wokoworks.com
+        namespace: local
+        group: DEFAULT_GROUP
+        file-extension: yml

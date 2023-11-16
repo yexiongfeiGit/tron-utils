@@ -1,0 +1,25 @@
+server:
+  port: 52222
+  servlet:
+    context-path: /
+spring:
+  application:
+    name: dec-service-chain-tron-testnet
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active: local
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        namespace: local
+        group: DEFAULT_GROUP
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: local
+        group: DEFAULT_GROUP
+        file-extension: yml
+        shared-configs:
+          - data-id: web3-nodes.yml
+            refresh: true

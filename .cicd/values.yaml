@@ -1,0 +1,45 @@
+version: 2.0
+kind: java
+profiles:
+  default:
+    services:
+      - dec-service-chain-tron-mainnet
+
+builds:
+  dec-service-chain-tron:
+    serviceFolder: ./dec-service-chain-tron-server
+    args:
+      arch: arm64
+
+services:
+  dec-service-chain-tron-mainnet:
+    build: dec-service-chain-tron
+    feature:
+      - apm
+      - nacos
+    template:
+      # 亲和性配置
+      affinity:
+        nodeAffinity:
+          requiredDuringScheduling:
+            - key: arch
+              operator: In
+              values:
+                - arm
+      # 污点配置
+      tolerations:
+        - key: "arch"
+          operator: "Equal"
+          value: "arm"
+          effect: "NoSchedule"
+      env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: prod
+        - name: JAVA_OPTS
+          value: -Xmx1344M -Xms1344M -Xmn448M -XX:MaxMetaspaceSize=256M -XX:MetaspaceSize=256M -XX:+UseG1GC -XX:ActiveProcessorCount=2
+      containerPort:
+        - name: http1
+          port: 52222
+          protocol: TCP
+      svcLabels:
+        metric: open
