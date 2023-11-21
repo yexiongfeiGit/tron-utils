@@ -3,7 +3,7 @@ kind: java
 profiles:
   default:
     services:
-      - dec-service-chain-tron-testnet
+      - dec-service-chain-tron-mainnet
 
 builds:
   dec-service-chain-tron:
@@ -12,9 +12,10 @@ builds:
       arch: arm64
 
 services:
-  dec-service-chain-tron-testnet:
+  dec-service-chain-tron-mainnet:
     build: dec-service-chain-tron
     feature:
+      - apm
       - nacos
     template:
       # 亲和性配置
@@ -35,19 +36,10 @@ services:
         - name: SPRING_PROFILES_ACTIVE
           value: prod
         - name: JAVA_OPTS
-          value: -Xmx1344M -Xms1344M -Xmn448M -XX:MaxMetaspaceSize=256M -XX:MetaspaceSize=256M -XX:+UseSerialGC
+          value: -Xmx1344M -Xms1344M -Xmn448M -XX:MaxMetaspaceSize=256M -XX:MetaspaceSize=256M -XX:+UseG1GC -XX:ActiveProcessorCount=2
       containerPort:
         - name: http1
           port: 52222
           protocol: TCP
       svcLabels:
         metric: open
-      # 指定service资源
-      resources:
-        enabled: true
-        limits:
-          cpu: 1000m # 1 cpu
-          memory: 2000Mi
-        requests:
-          cpu: 50m
-          memory: 1000Mi
